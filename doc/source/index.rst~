@@ -1,0 +1,60 @@
+.. pilot_doc documentation master file, created by
+   sphinx-quickstart on Fri Aug 18 08:41:10 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to pilot_doc's documentation!
+=====================================
+
+.. コメント
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   arch
+   model
+   data
+   logic
+   goal
+   
+   pilot
+   
+   todo
+   memo
+
+**太字**
+
+*斜体* [#f1]_
+
+
+
+``リテラル``
+
+`リンク付きテキスト <http://python.org>`_
+
+.. |置換| replace:: 痴漢
+
+|置換|
+
+.. tabularcolumns:: |L|R|C|J|
+
+====== ====== ====== ======
+A      B      C      D
+====== ====== ====== ======
+1      4      7      10
+2      5      8      11
+3      6      9      12
+てすと てすと てすと てすと
+====== ====== ====== ======
+
+.. [#f1] 脚注です
+
+.. image:: haruhi.*
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

@@ -1,0 +1,65 @@
+==============
+ドメインモデル
+==============
+
+執行系
+======
+
+Order
+-----
+
+.. csv-table::
+   :header: プロパティ, XXX
+
+   ID, A
+   SystemDay,
+   RecvTime,
+   ClOrdID,
+   ExchangeOrderID,
+   IsInvestimantAllExecuted,
+   IsBBExecuted,
+   State,
+   Account,
+   Symbol,
+   Exchange,
+   ExchangeOfPosition,
+   SecurityType,
+   Side,
+   CashMargin,
+   TradeType,
+   MarginTradeTYpe,
+   OrderCapacity,
+   RecvPriceType,
+   RecvPrice,
+   OrderPrice,
+   PriceType,
+   RecvQty,
+   OrderQty,
+   CumQty,
+   ControlUnit,
+   CumValue,
+   CxlQty,
+   CxlQty2,
+   IsCarryOverTarget,
+   StopSymbol,
+   StopPx,
+   StopCondition,
+   InvTCource,
+   InvTQtySpecified,
+   SameDayPayment,
+   CanceledRec,
+   IsCanceled,
+   CanceledRecord,
+   IsFinished,
+   
+
+OrderDetail
+-----------
+
+マスタ系
+========
+
+Symbol
+------
+
+

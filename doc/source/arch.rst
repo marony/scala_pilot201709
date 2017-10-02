@@ -1,0 +1,111 @@
+==============
+アーキテクチャ
+==============
+
+システム構成
+============
+
+ミドルウェア
+------------
+
+.. graphviz::
+
+   digraph middleware {
+      //rankdir=LR;
+      //newrank=true;
+      node [shape=record];
+
+      client;
+      client -> api:a1;
+      
+      subgraph cluster_app {
+         rankdir=same;
+	 
+         api [label="<n1> API|{<a1> Scalatra|<a2> プレゼンテーションロジック}"];
+         srv [label="<n2> Tx Server|{<s1> Finagle|<s2> ビジネスロジック|<s3> DataMapper(Tx内キャッシュ)}"];
+
+         api:a2 -> srv:s1;
+      }
+
+      subgraph cluster_mdl {
+         rankdir=same;
+
+	 rdx [label="{キャッシュ|Redis}"];
+	 kfk [label="{キュー|kafka}"];
+	 rdb [label="{RDB|PostgreSQL}"];
+
+	 rdx -> srv:s2;
+	 srv:s2 -> kfk -> rdb;
+	 rdb -> rdx;
+      }
+
+      zk [label="ZooKeeper"];
+      client -> zk;
+      api -> zk [dir="both", label="生存監視"];
+      srv -> zk [dir="both", label="生存監視"];
+
+      subgraph cluster_outer {
+         rankdir=same;
+
+	 kfk2 [label="{キュー|kafka}"];
+	 outer [label="外部接続"];
+
+	 srv:s2 -> kfk2 -> outer [dir="both"];
+      }
+   }
+
+ソフトウェア
+------------
+
+.. graphviz::
+
+   digraph software {
+      //rankdir=LR;
+      //newrank=true;
+      node [shape=record];
+
+      cmn [label="{<n1> 共通|{<c1> ログ|<c1> Tx}|{<c2> DBアクセス|<c3> DBマッピング|<c4> 設定}|{<c5> Tx内キャッシュ|<c6> チェック機構|<c7> プラグイン機構|<c8> DI機構}}"];
+      app [label="{<n2> 入出力|{<a1> 入力VO|<a2> バリデーション|<a3> 出力VO|<a4> 入出力モナド}}"];
+      lgc [label="{<n3> ビジネスロジック|{<l1> チェック|<l2> プラグイン|<l3> DI}|{<l4>サービス |<l5> モデル|<l6> エンティティ|<l7> リポジトリ}}"];
+
+      app -> lgc;
+      app -> cmn;
+      lgc -> cmn;
+   }
+
+API
+===
+
+#. URIは小文字でハイフン区切りとする
+   ちゃんと設計する
+#. パラメータはユーザが主体のメッセージはユーザがURIに入り、その他はJSONでボディとする
+   ex) POST /orders/:user-id:/order:unique-id:
+   
+データベース
+=============
+
+#. テーブル名・カラム名は小文字でアンダーバー区切りとする
+
+#. トランザクションテーブル
+   行為を書く
+   挿入のみ
+#. スナップテーブル
+   挿入のみ
+   最新レコードがすぐに参照できるように
+
+状態
+====
+
+#. 予約
+#. 処理中
+#. 処理済
+#. 訂正・取消中
+#. 取消済
+#. (管理者)削除済
+
+チェック
+========
+
+キャッシュ
+==========
+

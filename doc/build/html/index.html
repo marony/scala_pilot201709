@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="jp">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to pilot_doc’s documentation! &#8212; pilot_doc 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="アーキテクチャ" href="arch.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-pilot-doc-s-documentation">
+<h1>Welcome to pilot_doc&#8217;s documentation!<a class="headerlink" href="#welcome-to-pilot-doc-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">あとで書く</p>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="arch.html">アーキテクチャ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="arch.html#id2">システム構成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arch.html#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arch.html#id5">データベース</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arch.html#id6">状態</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arch.html#id7">チェック</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arch.html#id8">キャッシュ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">ドメインモデル</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model.html#id2">執行系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#id3">マスタ系</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logic.html">ロジック・チェック・プラグイン</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logic.html#id2">基本ロジック</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html#id3">注文</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html#id4">マスタ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html#id5">トリガ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html#id6">日付</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pilot.html">パイロットシステム</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pilot.html#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pilot.html#id7">テーブル</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p><strong>太字</strong></p>
+<p><em>斜体</em> <a class="footnote-reference" href="#f1" id="id1">[1]</a></p>
+<p><code class="docutils literal"><span class="pre">リテラル</span></code></p>
+<p><a class="reference external" href="http://python.org">リンク付きテキスト</a></p>
+<p>痴漢</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">重要な情報です</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">危険な情報です</p>
+</div>
+<p>数式 <span class="math">\(a^2 + b^2 = c^2\)</span>.</p>
+<img src="_images/graphviz-79763e06e3edb8e1a7b41d6018af72f53dfbd649.png" alt="digraph foo {
+// node define
+alpha [shape = box];
+beta [shape = box];
+gamma [shape = Msquare];
+delta [shape = box];
+epsilon [shape = trapezium];
+zeta [shape = Msquare];
+eta;
+theta [shape = doublecircle];
+
+// edge define
+alpha -&gt; beta [label = &quot;a-b&quot;, arrowhead = normal];
+alpha -&gt; gamma [label = &quot;a-g&quot;];
+beta -&gt; delta [label = &quot;b-d&quot;];
+beta -&gt; epsilon [label = &quot;b-e&quot;, arrowhead = tee];
+gamma -&gt; zeta [label = &quot;g-z&quot;];
+gamma -&gt; eta [label = &quot;g-e&quot;, style = dotted];
+delta -&gt; theta [arrowhead = crow];
+zeta -&gt; theta [arrowhead = crow];
+}" />
+<p class="plantuml">
+<img src="_images/plantuml-7a58f2abe846fcaa8212d7fcc103ea2165b5e892.png" alt="Bob -&gt; Alice: おはよー
+Bob &lt;- Alice: エッチ!!" />
+</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">A</th>
+<th class="head">B</th>
+<th class="head">C</th>
+<th class="head">D</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>4</td>
+<td>7</td>
+<td>10</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>5</td>
+<td>8</td>
+<td>11</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>6</td>
+<td>9</td>
+<td>12</td>
+</tr>
+<tr class="row-odd"><td>てすと</td>
+<td>てすと</td>
+<td>てすと</td>
+<td>てすと</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>脚注です</td></tr>
+</tbody>
+</table>
+<img alt="_images/haruhi.jpg" src="_images/haruhi.jpg" />
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to pilot_doc&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="arch.html" title="next chapter">アーキテクチャ</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Atsushi Tada.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

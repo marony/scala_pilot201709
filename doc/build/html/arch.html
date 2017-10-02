@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="jp">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>アーキテクチャ &#8212; pilot_doc 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ドメインモデル" href="model.html" />
+    <link rel="prev" title="Welcome to pilot_doc’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>アーキテクチャ<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2>システム構成<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>ミドルウェア<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<img src="_images/graphviz-ea90e7dc4b97c74457a6846575ace385c4f08712.png" alt="digraph middleware {
+   //rankdir=LR;
+   //newrank=true;
+   node [shape=record];
+
+   client;
+   client -&gt; api:a1;
+
+   subgraph cluster_app {
+      rankdir=same;
+
+      api [label=&quot;&lt;n1&gt; API|{&lt;a1&gt; Scalatra|&lt;a2&gt; プレゼンテーションロジック}&quot;];
+      srv [label=&quot;&lt;n2&gt; Tx Server|{&lt;s1&gt; Finagle|&lt;s2&gt; ビジネスロジック|&lt;s3&gt; DataMapper(Tx内キャッシュ)}&quot;];
+
+      api:a2 -&gt; srv:s1;
+   }
+
+   subgraph cluster_mdl {
+      rankdir=same;
+
+      rdx [label=&quot;{キャッシュ|Redis}&quot;];
+      kfk [label=&quot;{キュー|kafka}&quot;];
+      rdb [label=&quot;{RDB|PostgreSQL}&quot;];
+
+      rdx -&gt; srv:s2;
+      srv:s2 -&gt; kfk -&gt; rdb;
+      rdb -&gt; rdx;
+   }
+
+   zk [label=&quot;ZooKeeper&quot;];
+   client -&gt; zk;
+   api -&gt; zk [dir=&quot;both&quot;, label=&quot;生存監視&quot;];
+   srv -&gt; zk [dir=&quot;both&quot;, label=&quot;生存監視&quot;];
+
+   subgraph cluster_outer {
+      rankdir=same;
+
+      kfk2 [label=&quot;{キュー|kafka}&quot;];
+      outer [label=&quot;外部接続&quot;];
+
+      srv:s2 -&gt; kfk2 -&gt; outer [dir=&quot;both&quot;];
+   }
+}" />
+</div>
+<div class="section" id="id4">
+<h3>ソフトウェア<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<img src="_images/graphviz-794b1e96ca7a8de23afff78d0ea35c27f9fb5333.png" alt="digraph software {
+   //rankdir=LR;
+   //newrank=true;
+   node [shape=record];
+
+   cmn [label=&quot;{&lt;n1&gt; 共通|{&lt;c1&gt; ログ|&lt;c1&gt; Tx}|{&lt;c2&gt; DBアクセス|&lt;c3&gt; DBマッピング|&lt;c4&gt; 設定}|{&lt;c5&gt; Tx内キャッシュ|&lt;c6&gt; チェック機構|&lt;c7&gt; プラグイン機構|&lt;c8&gt; DI機構}}&quot;];
+   app [label=&quot;{&lt;n2&gt; 入出力|{&lt;a1&gt; 入力VO|&lt;a2&gt; バリデーション|&lt;a3&gt; 出力VO|&lt;a4&gt; 入出力モナド}}&quot;];
+   lgc [label=&quot;{&lt;n3&gt; ビジネスロジック|{&lt;l1&gt; チェック|&lt;l2&gt; プラグイン|&lt;l3&gt; DI}|{&lt;l4&gt;サービス |&lt;l5&gt; モデル|&lt;l6&gt; エンティティ|&lt;l7&gt; リポジトリ}}&quot;];
+
+   app -&gt; lgc;
+   app -&gt; cmn;
+   lgc -&gt; cmn;
+}" />
+</div>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>URIは小文字でハイフン区切りとする
+ちゃんと設計する</li>
+<li>パラメータはユーザが主体のメッセージはユーザがURIに入り、その他はJSONでボディとする
+ex) POST /orders/:user-id:/order:unique-id:</li>
+</ol>
+</div>
+<div class="section" id="id5">
+<h2>データベース<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>テーブル名・カラム名は小文字でアンダーバー区切りとする</li>
+<li>トランザクションテーブル
+行為を書く
+挿入のみ</li>
+<li>スナップテーブル
+挿入のみ
+最新レコードがすぐに参照できるように</li>
+</ol>
+</div>
+<div class="section" id="id6">
+<h2>状態<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>予約</li>
+<li>処理中</li>
+<li>処理済</li>
+<li>訂正・取消中</li>
+<li>取消済</li>
+<li>(管理者)削除済</li>
+</ol>
+</div>
+<div class="section" id="id7">
+<h2>チェック<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id8">
+<h2>キャッシュ<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">アーキテクチャ</a><ul>
+<li><a class="reference internal" href="#id2">システム構成</a><ul>
+<li><a class="reference internal" href="#id3">ミドルウェア</a></li>
+<li><a class="reference internal" href="#id4">ソフトウェア</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#id5">データベース</a></li>
+<li><a class="reference internal" href="#id6">状態</a></li>
+<li><a class="reference internal" href="#id7">チェック</a></li>
+<li><a class="reference internal" href="#id8">キャッシュ</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to pilot_doc&#8217;s documentation!</a></li>
+      <li>Next: <a href="model.html" title="next chapter">ドメインモデル</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/arch.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Atsushi Tada.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/arch.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
